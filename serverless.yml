@@ -1,0 +1,67 @@
+
+service: researchal-api-comments
+
+custom:
+  settings:
+    COMMENTS_TABLE: researchpal-comments
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment: ${self:custom.settings}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action: 
+        - dynamodb:DescribeTable
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:Query
+        - dynamodb:BatchGetItem
+      Resource:
+        - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.settings.COMMENTS_TABLE}"
+
+functions:
+  postComment:
+    handler: handler.postComment
+    events:
+      - http:
+          path: /post
+          method: post
+          cors: true
+  getAllComments:
+    handler: handler.getAllComments
+    events:
+      - http:
+          path: /comments
+          method: get
+          cors: true
+  getPostComments:
+    handler: handler.getPostComments
+    events:
+      - http:
+          path: /comments/{postid}
+          method: get
+          cors: true
+
+resources:
+  Resources:
+    CommentTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+        - AttributeName: "uid"
+          AttributeType: "S"
+        - AttributeName: "postid"
+          AttributeType: "S"
+        KeySchema:
+        - AttributeName: "uid"
+          KeyType: "HASH"
+        - AttributeName: "postid"
+          KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.settings.COMMENTS_TABLE}

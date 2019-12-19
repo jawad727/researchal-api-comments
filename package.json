@@ -1,0 +1,22 @@
+{
+  "name": "researchal-api-comments",
+  "version": "1.0.0",
+  "description": "Full CRUD for comments with a foreign key-like relationship with posts and users",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jawad727/researchal-api-comments.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jawad727/researchal-api-comments/issues"
+  },
+  "homepage": "https://github.com/jawad727/researchal-api-comments#readme",
+  "dependencies": {
+    "uuid": "^3.3.3"
+  }
+}
